@@ -30,4 +30,74 @@
     }
     #token {
       background: #330000;
-      color: #
+      color: #ff6666;
+      padding: 10px;
+      border-radius: 10px;
+      margin-top: 10px;
+      border: 1px dashed #ff3333;
+      display: inline-block;
+      width: 80%;
+      word-wrap: break-word;
+      min-height: 40px;
+    }
+    button {
+      background: #ff3333;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      padding: 12px 25px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff0000;
+      margin-top: 15px;
+    }
+    button:hover {
+      background: #cc0000;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #ff8080;
+    }
+  </style>
+</head>
+<body>
+  <h1>TÁCH AUTHORIZATION</h1>
+  <p>Dán **curl** hoặc **HTTP Headers** vào ô dưới đây:</p>
+
+  <textarea id="input" placeholder="Dán nội dung vào đây..."></textarea>
+
+  <div id="token">- Không tìm thấy Authorization -</div><br>
+
+  <button onclick="copyToken()">SAO CHÉP AUTHORIZATION</button>
+
+  <footer>© 2025 TLTOOL.VN - Công cụ tách Authorization tự động</footer>
+
+  <script>
+    const input = document.getElementById('input');
+    const tokenDiv = document.getElementById('token');
+
+    input.addEventListener('input', () => {
+      // Tìm Authorization trong nội dung
+      const match = input.value.match(/Authorization:\s*([A-Za-z0-9._\-]+)/i);
+      if (match) {
+        tokenDiv.textContent = match[1];
+      } else {
+        tokenDiv.textContent = '- Không tìm thấy Authorization -';
+      }
+    });
+
+    function copyToken() {
+      const token = tokenDiv.textContent;
+      if (token && !token.includes('Không tìm thấy')) {
+        navigator.clipboard.writeText(token);
+        alert('✅ Đã sao chép Authorization!');
+      } else {
+        alert('❌ Không có Authorization để sao chép!');
+      }
+    }
+  </script>
+</body>
+</html>
+
