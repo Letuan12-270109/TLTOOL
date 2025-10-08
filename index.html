@@ -1,95 +1,100 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TLTOOL - Tách Authorization BumX</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tách Authorization | TLTOOL</title>
   <style>
     body {
-      background: radial-gradient(circle at top, #4d0000, #000);
-      font-family: "Poppins", sans-serif;
+      background-color: #1a0000;
       color: #fff;
+      font-family: 'Arial', sans-serif;
       text-align: center;
       padding: 20px;
     }
     h1 {
-      color: #ff4444;
-      font-size: 28px;
-      letter-spacing: 1px;
+      color: #ff3333;
       text-shadow: 0 0 10px #ff0000;
-    }
-    p {
-      color: #ffcccc;
     }
     textarea {
       width: 90%;
-      height: 150px;
-      background-color: #200000;
-      color: #fff;
-      border: 2px solid #ff3333;
-      border-radius: 12px;
-      padding: 12px;
-      font-size: 14px;
+      height: 140px;
+      background: #330000;
+      border: 1px solid #ff3333;
+      border-radius: 10px;
+      color: white;
+      padding: 10px;
+      font-size: 15px;
       outline: none;
-      resize: none;
-      box-shadow: 0 0 10px #660000;
+      margin-bottom: 15px;
     }
-    textarea::placeholder {
-      color: #ff7777;
+    #token {
+      background: #330000;
+      color: #ff6666;
+      padding: 10px;
+      border-radius: 10px;
+      margin-top: 10px;
+      border: 1px dashed #ff3333;
+      display: inline-block;
+      width: 80%;
+      word-wrap: break-word;
+      min-height: 40px;
     }
     button {
-      background-color: #ff3333;
+      background: #ff3333;
       border: none;
-      color: white;
-      padding: 12px 30px;
       border-radius: 10px;
-      margin-top: 15px;
-      cursor: pointer;
-      font-size: 15px;
+      color: white;
+      padding: 12px 25px;
+      font-size: 16px;
       font-weight: bold;
-      text-transform: uppercase;
-      box-shadow: 0 0 15px #ff0000;
-      transition: 0.3s;
+      cursor: pointer;
+      box-shadow: 0 0 10px #ff0000;
+      margin-top: 15px;
     }
     button:hover {
-      background-color: #ff6666;
-      box-shadow: 0 0 25px #ff3333;
-    }
-    #output {
-      margin-top: 25px;
-      background-color: #1a0000;
-      padding: 15px;
-      border-radius: 10px;
-      border: 1px solid #ff3333;
-      word-break: break-all;
-      box-shadow: inset 0 0 10px #660000;
+      background: #cc0000;
     }
     footer {
-      margin-top: 25px;
-      font-size: 13px;
-      color: #ff9999;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #ff8080;
     }
   </style>
 </head>
 <body>
-  <h1>🔧 TLTOOL - Tách Authorization BumX</h1>
-  <p>Dán <b>Cookie</b> hoặc <b>Headers</b> BumX vào ô dưới đây để trích xuất Authorization:</p>
-  <textarea id="cookieInput" placeholder="Dán Cookie hoặc Headers tại đây..."></textarea><br>
-  <button onclick="getAuth()">Tách Authorization</button>
+  <h1>TÁCH AUTHORIZATION</h1>
+  <p>Dán **curl** hoặc **HTTP Headers** vào ô dưới đây:</p>
 
-  <div id="output">💡 Kết quả sẽ hiển thị tại đây...</div>
+  <textarea id="input" placeholder="Dán nội dung vào đây..."></textarea>
+
+  <div id="token">- Không tìm thấy Authorization -</div><br>
+
+  <button onclick="copyToken()">SAO CHÉP AUTHORIZATION</button>
 
   <footer>© 2025 TLTOOL.VN - Công cụ tách Authorization tự động</footer>
 
   <script>
-    function getAuth() {
-      const input = document.getElementById("cookieInput").value;
-      const match = input.match(/(?:Authorization:|access_token=)\s*([\w\-\.]+)/i);
-      const output = document.getElementById("output");
+    const input = document.getElementById('input');
+    const tokenDiv = document.getElementById('token');
+
+    input.addEventListener('input', () => {
+      // Tìm Authorization trong nội dung
+      const match = input.value.match(/Authorization:\s*([A-Za-z0-9._\-]+)/i);
       if (match) {
-        output.innerHTML = `<b>✅ Authorization:</b><br>${match[1]}`;
+        tokenDiv.textContent = match[1];
       } else {
-        output.innerHTML = "❌ Không tìm thấy Authorization trong dữ liệu đã dán!";
+        tokenDiv.textContent = '- Không tìm thấy Authorization -';
+      }
+    });
+
+    function copyToken() {
+      const token = tokenDiv.textContent;
+      if (token && !token.includes('Không tìm thấy')) {
+        navigator.clipboard.writeText(token);
+        alert('✅ Đã sao chép Authorization!');
+      } else {
+        alert('❌ Không có Authorization để sao chép!');
       }
     }
   </script>
